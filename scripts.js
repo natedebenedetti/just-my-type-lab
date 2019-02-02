@@ -1,16 +1,19 @@
 $('#keyboard-upper-container').hide(); //hides uppercase keyboard at page load.
 $(document).ready(function () { //waits for everything to load before running anything else.
 
-//space for declaring variables used throughout code.
+    //space for declaring variables used throughout code.
     const sentences = ['ten ate neite ate nee enet ite ate inet ent eate', 'Too ato too nOt enot one totA not anot tOO aNot', 'oat itain oat tain nate eate tea anne inant nean', 'itant eate anot eat nato inate eat anot tain eat', 'nee ene ate ite tent tiet ent ine ene ete ene ate'];
     let sentence = $('#sentence').text();
     let margin = 0;
-    let s = -1;
+    let s = 0;
 
     alert("When you are ready, press OK to display first line of text.") //alert that populates at page load. Once ok is clicked it appends the first string from the array.
     $('#sentence').append(sentences[0]).append('<br />');
     sentence = sentences[0];
 
+    if ($('#target-letter').text() == '') { //fires once when page first loads to display the first expected letter before any keys are pressed.
+        $('#target-letter').append(sentence[s]);
+    }
     $(document).keydown(function checkKeyDown(key) { //key down event listener. When the shift key (key code 16) is pressed the code runs and shows the uppercase keyboard.
         if (key.keyCode == '16') {
             $('#keyboard-upper-container').show();
@@ -34,12 +37,14 @@ $(document).ready(function () { //waits for everything to load before running an
         }
 
         function rightWrong() { //function used to compare the key pressed with the expected letter to determine if it was keyed correctly.
-            s++;
-            console.log(sentence[s]);
-            console.log(key.keyCode);
+            console.log(sentence[s]); // current expected letter
+            s++; // moves to next letter in string
+            $('#target-letter').text(sentence[s]);
+            console.log(sentence[s]); // next expected letter
             
-                
-            
+
+
+
         }
     });
 
