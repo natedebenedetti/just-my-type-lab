@@ -8,7 +8,7 @@ $(document).ready(function () { //waits for everything to load before running an
     let next = 0;
     let current = 0;
     let keyCount = 0;
-    let space = ''; //TRYING TO USE THIS TO CORRECT ISSUE WITH NOT RECOGNIZING THAT THE SPACE BAR IS THE SAME AS THE BLANK SPACE IN THE NEXT EXPECTED LETTER FIELD.
+    
 
     $(document).keydown(function checkKeyDown(key) { //key down event listener. When the shift key (key code 16) is pressed the code runs and shows the uppercase keyboard.
         if (key.keyCode == '16') {
@@ -17,9 +17,11 @@ $(document).ready(function () { //waits for everything to load before running an
         }
     });
     $(document).keyup(function checkKeyUp(key) { //key up event listener. when shift key is released the uppercase keyboard is hidden again.
+        $('#' + key.keyCode).removeClass('highlight'); // ONLY WORKS FOR THE SPACE BAR
         if (key.keyCode == '16') {
             $('#keyboard-upper-container').hide();
         }
+        
     });
 
     alert("When you are ready, press OK to display first line of text.") //alert that populates at page load. Once ok is clicked it appends the first string from the array.
@@ -30,7 +32,7 @@ $(document).ready(function () { //waits for everything to load before running an
 
     $(document).keypress(function checkKeyPress(key) { //keypress event listener.
         keyCount++;
-        $('#' + key.keyCode).css({ backgroundColor: 'yellow', fontWeight: 'bold' }); // GIVES HIGHLIGHT EFFECT TO KEY WHEN PRESSED, BUT STAYS THAT WAY UNTIL SENTENCE IS FINISHED.. NEED TO CORRECT THIS.
+        $('#' + key.keyCode).addClass('highlight');
         rightWrong();
         addLeftMargin();
         
@@ -93,9 +95,16 @@ $(document).ready(function () { //waits for everything to load before running an
         }
 
         function rightWrong() { //function used to compare the key pressed with the expected letter to determine if it was keyed correctly.
-            let id = $('#' + key.keyCode).text();  // *WITH THIS LOGIC, THE SPACEBAR IS NOT RECOGNIZED AS MATCHING THE BLANK SPACE IN THE EXPETED LETTER FIELD.
+            let id = $('#' + key.keyCode).text();  //
 
-            if (id == sentence[current] || space == sentence[current]) {
+            let spaceValue; // creates a variable used for handling spacebar not being recognized as matching the " " in the next expected letter.
+            if (sentence[current] === ' ') {
+                spaceValue = 'Space';
+            } else {
+                spaceValue;
+            }
+
+            if (id == sentence[current] || id == spaceValue) {
                 next++; // moves to next letter in string
                 $('#target-letter').text(sentence[next]); // keeps changing the letter in the '#target-letter field to the next expected letter.
                 $('#feedback').append('<span class="glyphicon glyphicon-ok"></span>');
@@ -106,6 +115,7 @@ $(document).ready(function () { //waits for everything to load before running an
                 $('#target-letter').text(sentence[next]); // keeps changing the letter in the '#target-letter field to the next expected letter.
                 $('#feedback').append('<span class="glyphicon glyphicon-remove"></span>')
                 current++;
+                
             }
 
             //*WHEN FINISHED GO BACK THROUGH CODE LOOKING FOR ANYTING WRITTEN IN CAPS LIKE THIS AND CORRECT ISSUES THEN REMOVE ALL CAPS NOTATION.
