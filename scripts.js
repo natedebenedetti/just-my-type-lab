@@ -17,7 +17,9 @@ $(document).ready(function () { //waits for everything to load before running an
         }
     });
     $(document).keyup(function checkKeyUp(key) { //key up event listener. when shift key is released the uppercase keyboard is hidden again.
-        $('#' + key.keyCode).removeClass('highlight'); // ONLY WORKS FOR THE SPACE BAR
+        $('#' + key.keyCode).removeClass('highlight'); //works for everything except the lowercase letters and the symbols. Lower case letters are returning a key.keyCode that is exactly 32 below the expected key.keyCode.
+        $('#' + (key.keyCode + 32)).removeClass('highlight'); //this is added as a workaround to make the lowercase letters removeClass .highlight work, but symbols don't work with this logic either.
+        console.log(key.keyCode); //COME BACK LATER AND EVALUATE HOW TO GET THE SYMBOLS KEYS TO CLEAR OUT THE .highlight. NOT AS IMPORTANT BECAUSE THEY AREN'T USED IN THE EXCERCISE AT ALL.
         if (key.keyCode == '16') {
             $('#keyboard-upper-container').hide();
         }
@@ -33,6 +35,7 @@ $(document).ready(function () { //waits for everything to load before running an
     $(document).keypress(function checkKeyPress(key) { //keypress event listener.
         keyCount++;
         $('#' + key.keyCode).addClass('highlight');
+        
         rightWrong();
         addLeftMargin();
         
@@ -44,7 +47,7 @@ $(document).ready(function () { //waits for everything to load before running an
             margin = 0;
             $('span.glyphicon').remove();
             $('#yellow-block').css({ marginTop: '45px', marginLeft: '' + margin + 'px' });
-            margin = margin + 17;
+            margin = margin + 15;
             $('#sentence').append(sentences[1]).append('<br />');
             keyCount = 0;
             sentence = sentences[1];
