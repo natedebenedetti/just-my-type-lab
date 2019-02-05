@@ -1,14 +1,16 @@
 $('#keyboard-upper-container').hide(); //hides uppercase keyboard at page load.
 $(document).ready(function () { //waits for everything to load before running anything else.
 
-    
+
     const sentences = ['ten ate neite ate nee enet ite ate inet ent eate', 'Too ato too nOt enot one totA not anot tOO aNot', 'oat itain oat tain nate eate tea anne inant nean', 'itant eate anot eat nato inate eat anot tain eat', 'nee ene ate ite tent tiet ent ine ene ete ene ate'];
     let sentence = $('#sentence').text();
     let margin = 0;
     let next = 0;
     let current = 0;
     let keyCount = 0;
+    let numberOfMistakes = 0;
     
+
 
     $(document).keydown(function checkKeyDown(key) { //key down event listener. When the shift key (key code 16) is pressed the code runs and shows the uppercase keyboard.
         if (key.keyCode == '16') {
@@ -16,14 +18,13 @@ $(document).ready(function () { //waits for everything to load before running an
 
         }
     });
-    $(document).keyup(function checkKeyUp(key) { //key up event listener. when shift key is released the uppercase keyboard is hidden again.
-        $('#' + key.keyCode).removeClass('highlight'); //works for everything except the lowercase letters and the symbols. Lower case letters are returning a key.keyCode that is exactly 32 below the expected key.keyCode.
-        $('#' + (key.keyCode + 32)).removeClass('highlight'); //this is added as a workaround to make the lowercase letters removeClass .highlight work, but symbols don't work with this logic either.
-        console.log(key.keyCode); //COME BACK LATER AND EVALUATE HOW TO GET THE SYMBOLS KEYS TO CLEAR OUT THE .highlight. NOT AS IMPORTANT BECAUSE THEY AREN'T USED IN THE EXCERCISE AT ALL.
-        if (key.keyCode == '16') {
+    $(document).keyup(function checkKeyUp(key) { //key up event listener. 
+        $('.highlight').removeClass('highlight'); //removes highlight class from any key that recieves the class highlight.
+
+        if (key.keyCode == '16') { //key code for shift key. when shift key is released the uppercase keyboard is hidden again.
             $('#keyboard-upper-container').hide();
         }
-        
+
     });
 
     alert("When you are ready, press OK to display first line of text.") //alert that populates at page load. Once ok is clicked it appends the first string from the array.
@@ -35,10 +36,11 @@ $(document).ready(function () { //waits for everything to load before running an
     $(document).keypress(function checkKeyPress(key) { //keypress event listener.
         keyCount++;
         $('#' + key.keyCode).addClass('highlight');
-        
-        rightWrong();
+        rightWrong(); 
         addLeftMargin();
-        
+        console.log(numberOfMistakes);
+
+
 
         //beginning of if statements used to place next sentence.. would have liked to use a loop, but had no control over when sentence was placed.
         if (sentence == sentences[0] && keyCount == sentences[0].length) {
@@ -52,7 +54,7 @@ $(document).ready(function () { //waits for everything to load before running an
             keyCount = 0;
             sentence = sentences[1];
             $('#target-letter').append(sentence[next]);
-            
+
 
         } else if (sentence == sentences[1] && keyCount == sentences[1].length) {
             next = 0;
@@ -112,22 +114,23 @@ $(document).ready(function () { //waits for everything to load before running an
                 $('#target-letter').text(sentence[next]); // keeps changing the letter in the '#target-letter field to the next expected letter.
                 $('#feedback').append('<span class="glyphicon glyphicon-ok"></span>');
                 current++;
-                
+
             } else {
                 next++; // moves to next letter in string
                 $('#target-letter').text(sentence[next]); // keeps changing the letter in the '#target-letter field to the next expected letter.
-                $('#feedback').append('<span class="glyphicon glyphicon-remove"></span>')
+                $('#feedback').append('<span class="glyphicon glyphicon-remove"></span>');
+                numberOfMistakes++;
                 current++;
-                
+
             }
+        }
+        let numberOfWords = wordNumber(sentences[0] + sentences[1] + sentences[2] + sentences[3] + sentences[4]) + 4;
 
-            //*WHEN FINISHED GO BACK THROUGH CODE LOOKING FOR ANYTING WRITTEN IN CAPS LIKE THIS AND CORRECT ISSUES THEN REMOVE ALL CAPS NOTATION.
-
-
-
+        function wordNumber(str) {
+            return str.split(" ").length
         }
     });
-
+    //*WHEN FINISHED GO BACK THROUGH CODE LOOKING FOR ANYTING WRITTEN IN CAPS LIKE THIS AND CORRECT ISSUES THEN REMOVE ALL CAPS NOTATION.
 });
 
 
