@@ -8,8 +8,10 @@ $(document).ready(function () { //waits for everything to load before running an
     let next = 0;
     let current = 0;
     let keyCount = 0;
+    let startTime;
+    let endTime;
     let numberOfMistakes = 0;
-    
+
 
 
     $(document).keydown(function checkKeyDown(key) { //key down event listener. When the shift key (key code 16) is pressed the code runs and shows the uppercase keyboard.
@@ -33,12 +35,19 @@ $(document).ready(function () { //waits for everything to load before running an
 
     $('#target-letter').append(sentence[next]); //places next expected letter in the div with id 'target-letter'
 
-    $(document).keypress(function checkKeyPress(key) { //keypress event listener.
+    $(document).keypress(function checkKeyPress(key) { //statement for when to run start()
         keyCount++;
+        if (sentence == sentences[0] && keyCount == 1) { // starts the timer.
+            start();
+        }
         $('#' + key.keyCode).addClass('highlight');
-        rightWrong(); 
+        rightWrong();
         addLeftMargin();
-        console.log(numberOfMistakes);
+        if (sentence == sentences[4] && keyCount == 49) { //statement for when to run end().
+            end();
+
+        }
+        //console.log(numberOfMistakes);
 
 
 
@@ -124,10 +133,32 @@ $(document).ready(function () { //waits for everything to load before running an
 
             }
         }
-        let numberOfWords = wordNumber(sentences[0] + sentences[1] + sentences[2] + sentences[3] + sentences[4]) + 4;
-
+        //below this line are the functions necessary to calculate words per minute typed and display on screen.
         function wordNumber(str) {
             return str.split(" ").length
+        }
+ 
+        function start() { //function that logs the start time.
+            startTime = new Date();
+        
+
+        }
+        function end() { // function that logs the end time and calculates the difference between it and start time.
+            let numberOfWords = wordNumber(sentences[0] + sentences[1] + sentences[2] + sentences[3] + sentences[4]) + 4;
+            endTime = new Date();
+            let timeDiff = endTime -= startTime;
+            timeDiff /= 60000;
+
+            let minutes = Math.round(timeDiff);
+            
+            wordsPerMinute();
+
+            function wordsPerMinute() { //
+                let wpm = numberOfWords / minutes - 2 * numberOfMistakes;
+                alert(wpm + "words per minute! Would you like to play again?");
+                document.location.reload();
+            }
+
         }
     });
     //*WHEN FINISHED GO BACK THROUGH CODE LOOKING FOR ANYTING WRITTEN IN CAPS LIKE THIS AND CORRECT ISSUES THEN REMOVE ALL CAPS NOTATION.
