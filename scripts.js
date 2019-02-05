@@ -62,7 +62,7 @@ $(document).ready(function () { //waits for everything to load before running an
             $('#sentence').append(sentences[1]).append('<br />');
             keyCount = 0;
             sentence = sentences[1];
-            $('#target-letter').append(sentence[next]);
+            $('#target-letter').text(sentence[next]);
 
 
         } else if (sentence == sentences[1] && keyCount == sentences[1].length) {
@@ -75,7 +75,7 @@ $(document).ready(function () { //waits for everything to load before running an
             $('#sentence').append(sentences[2]).append('<br />');
             keyCount = 0;
             sentence = sentences[2];
-            $('#target-letter').append(sentence[next]);
+            $('#target-letter').text(sentence[next]);
 
         } else if (sentence == sentences[2] && keyCount == sentences[2].length) {
             next = 0;
@@ -87,7 +87,7 @@ $(document).ready(function () { //waits for everything to load before running an
             $('#sentence').append(sentences[3]).append('<br />');
             keyCount = 0;
             sentence = sentences[3];
-            $('#target-letter').append(sentence[next]);
+            $('#target-letter').text(sentence[next]);
 
         } else if (sentence == sentences[3] && keyCount == sentences[3].length) {
             next = 0;
@@ -99,7 +99,7 @@ $(document).ready(function () { //waits for everything to load before running an
             $('#sentence').append(sentences[4]).append('<br />');
             keyCount = 0;
             sentence = sentences[4];
-            $('#target-letter').append(sentence[next]);
+            $('#target-letter').text(sentence[next]);
         }
         //end of if statements for placing next sentence.
 
